@@ -1,0 +1,72 @@
+env:
+    credentials: "ENCRYPTED[!45e3a95a8ffea36176cb2a698b9fe2d38ba7cc0ad347e9e812ae62694933ce95a91af165f5e876215ba83ee506c8748e!]"
+    rcloneconfig: "ENCRYPTED[!d5b74054fe32952696be325d0be8fd11d2eeb4819a6be9cbf1ba5e935b02fb9e7fef89a403b9b425947ece5ffcdd1878!]"
+    tokentl: "ENCRYPTED[!f7c9ee534303ef26af01811d78e5487d9581d3953625b181f249c1710708e95069c1691656213e852fa56de9cfb1a0a4!]"
+    idtl: "ENCRYPTED[!70708ee104dded568dcc3cdd04f31b1a81a80b5fbedf7f2a94d220e119dd009cb2d088e769572a8facd9ecacf1604296!]"
+    lunch: lunch qassa_ysl-userdebug
+    make: make qassa
+ 
+task:
+  name: "Setting Up, Syncing, Building and Uploading..."
+  timeout_in: 480m
+  container:
+      image: inok2341/anu:latest
+      cpu: 8
+      memory: 32G
+
+  Build-Env-Setup_background_script:
+       - export DEBIAN_FRONTEND=noninteractive
+       - mkdir -p ~/.config/rclone
+       - echo "$rcloneconfig" > ~/.rclone.conf
+       - git config --global user.name "Rahmad Adi Pratama"
+       - git config --global user.email "OhMyVenyx@proton.me"
+       - echo "$credentials" > ~/.git-credentials
+       - git config --global credential.helper store --file=~/.git-credentials
+       - mkdir -p ~/ccache
+       - rclone copy venyx:qassa/ccache.tar.gz ~/ -P
+       - cd ~/
+       - time tar xf ccache.tar.gz
+       - cd ~/
+
+  Storage-Checker_background_script:
+      - df -h
+      - lsblk
+      - ls -l -a -h
+      - ./w.sh
+
+  Sync_script:
+      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Start sync Source"
+      - mkdir -p ~/rom
+      - cd ~/rom
+      - sudo curl --create-dirs -L -o /usr/local/bin/repoo -O -L https://storage.googleapis.com/git-repo-downloads/repo
+      - sudo chmod a+rx /usr/local/bin/repoo
+      - repoo init -q --no-repo-verify --depth=1 -u https://github.com/keepQASSA/manifest.git -b Q -g default,-mips,-darwin,-notdefault
+      - git clone --depth 1 https://github.com/IDN-Labs/local_manifest.git -b qassa .repo/local_manifests
+      - rm -rf .repo/repo && git clone https://gerrit.googlesource.com/git-repo .repo/repo
+      - sed -i 's|"ssh|"https|g' .repo/manifests/snippets/qassa.xml
+      - sed -i 's|git@||g' .repo/manifests/snippets/qassa.xml
+#      - repoo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j8 --fail-fast
+      - repoo sync -c -j8 --force-sync --no-clone-bundle --no-tags
+      - sed -i 's| -u||g' vendor/qassa/config/branding.mk
+      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Sync Completed!"
+
+  Build_script:
+      - export BUILD_USERNAME="venyx"
+      - export BUILD_HOSTNAME="IDN-Labs"
+      - export KBUILD_BUILD_USER="OhMyVenyx"
+      - export KBUILD_BUILD_HOST="IDN-Labs"
+      - sudo ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build Started!"
+      - ./collect.sh
+#      - ./final.sh
+      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build $(cd ~/rom/out/target/product/ysl/ && ls qassa-*.zip) Completed!"
+
+  Upload_script:
+      - ./upload.sh
+      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Compres ccache"
+      - ./ziping.sh
+      - cd ~/
+      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Uploading ccache...."
+      - rclone copy ccache.tar.gz venyx:qassa -P
+      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Ccache Uploaded Successfully!"
+
