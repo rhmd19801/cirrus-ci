@@ -5,7 +5,7 @@ env:
     idtl: "ENCRYPTED[!70708ee104dded568dcc3cdd04f31b1a81a80b5fbedf7f2a94d220e119dd009cb2d088e769572a8facd9ecacf1604296!]"
     lunch: lunch qassa_ysl-userdebug
     make: make qassa
- 
+
 task:
   name: "Setting Up, Syncing, Building and Uploading..."
   timeout_in: 480m
