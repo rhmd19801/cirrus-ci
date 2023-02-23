@@ -43,8 +43,7 @@ task:
       - repoo init -q --no-repo-verify --depth=1 -u https://github.com/keepQASSA/manifest.git -b Q -g default,-mips,-darwin,-notdefault
       - git clone --depth 1 https://github.com/IDN-Labs/local_manifest.git -b qassa .repo/local_manifests
       - rm -rf .repo/repo && git clone https://gerrit.googlesource.com/git-repo .repo/repo
-      - sed -i 's|"ssh|"https|g' .repo/manifests/snippets/qassa.xml
-      - sed -i 's|git@||g' .repo/manifests/snippets/qassa.xml
+      - sed -i 's|ssh://git@github.com|https://github.com|g' .repo/manifests/snippets/qassa.xml
 #      - repoo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j8 --fail-fast
       - repoo sync -c -j8 --force-sync --no-clone-bundle --no-tags
       - sed -i 's| -u||g' vendor/qassa/config/branding.mk
