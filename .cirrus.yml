@@ -3,8 +3,8 @@ env:
     rcloneconfig: "ENCRYPTED[!a12d83a216a5d5a554e64f3b93a22c440193d8d127185bdef677424471d9c969f2ab5a2c0b3025b14c5a4b844cce6ee7!]"
     tokentl: "ENCRYPTED[!6a183e43e28acc82ad4c79f5c7d333bf539c71534a61e230cd58ec57e5a1f88243de7e0b72243087f2e3f8749554bfc0!]"
     idtl: "ENCRYPTED[!c0d3387a2a7bc56c9214bcf68aeb415780ccc7dd4e426aad728d89d4918c09d715a707afa2d84f14a0ce2d799c81965b!]"
-    lunch: lunch lineage_juice-user
-    make: make bacon
+    lunch: lunch xdroid_juice-userdebug
+    make: make xd
 
 task:
   name: "Setting Up, Syncing, Building and Uploading..."
@@ -23,7 +23,7 @@ task:
        - echo "$credentials" > ~/.git-credentials
        - git config --global credential.helper store --file=~/.git-credentials
        - mkdir -p ~/ccache
-       - rclone copy venyx:crdroid/ccache.tar.gz ~/ -P
+       - rclone copy venyx:xdroid/ccache.tar.gz ~/ -P
        - cd ~/
        - time tar xf ccache.tar.gz
        - cd ~/
@@ -40,20 +40,19 @@ task:
       - cd ~/rom
       - sudo curl --create-dirs -L -o /usr/local/bin/repoo -O -L https://storage.googleapis.com/git-repo-downloads/repo
       - sudo chmod a+rx /usr/local/bin/repoo
-      - repoo init -q --no-repo-verify --depth=1 -u https://github.com/crdroidandroid/android.git -b 11.0 -g default,-mips,-darwin,-notdefault
-      - git clone --depth 1 https://github.com/IDN-Labs/local_manifest.git -b crdroid-juice .repo/local_manifests
+      - repoo init -q --no-repo-verify --depth=1 -u https://github.com/IDN-Labs/xd_manifest.git -b eleven -g default,-mips,-darwin,-notdefault
+      - git clone --depth 1 https://github.com/IDN-Labs/local_manifest.git -b xdcaf-juice .repo/local_manifests
       - rm -rf .repo/repo && git clone https://gerrit.googlesource.com/git-repo .repo/repo
       - repoo sync -c -j8 --force-sync --no-clone-bundle --no-tags
+      - sed -i 's| -u||g' vendor/xdroid/config/xd_version.mk
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Sync Completed!"
 
   Build_script:
-      - export BUILD_USERNAME="OhMyVenyx"
-      - export BUILD_HOSTNAME="IDN-Labs"
       - sudo ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build Started!"
       - ./collect.sh
 #      - ./final.sh
-      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build $(cd ~/rom/out/target/product/juice/ && ls crDroidAndroid*.zip) Completed!"
+      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build $(cd ~/rom/out/target/product/juice/ && ls xdCAF*.zip) Completed!"
 
   Upload_script:
       - ./upload.sh
@@ -61,6 +60,6 @@ task:
       - ./ziping.sh
       - cd ~/
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Uploading ccache...."
-      - rclone copy ccache.tar.gz venyx:crdroid -P
+      - rclone copy ccache.tar.gz venyx:xdroid -P
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Ccache Uploaded Successfully!"
 
