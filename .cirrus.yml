@@ -4,15 +4,15 @@ env:
     tokentl: "ENCRYPTED[!6a183e43e28acc82ad4c79f5c7d333bf539c71534a61e230cd58ec57e5a1f88243de7e0b72243087f2e3f8749554bfc0!]"
     idtl: "ENCRYPTED[!c0d3387a2a7bc56c9214bcf68aeb415780ccc7dd4e426aad728d89d4918c09d715a707afa2d84f14a0ce2d799c81965b!]"
     lunch: lunch lineage_juice-user
-    make: make bacon
+    make: make kernel
 
 task:
   name: "Setting Up, Syncing, Building and Uploading..."
   timeout_in: 480m
   container:
       image: inok2341/anu:latest
-      cpu: 8
-      memory: 32G
+      cpu: 4
+      memory: 16G
 
   Build-Env-Setup_background_script:
        - export DEBIAN_FRONTEND=noninteractive
@@ -58,9 +58,9 @@ task:
   Upload_script:
       - ./upload.sh
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Compres ccache"
-      - ./ziping.sh
-      - cd ~/
-      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Uploading ccache...."
-      - rclone copy ccache.tar.gz venyx:crdroid -P
-      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Ccache Uploaded Successfully!"
+#      - ./ziping.sh
+#      - cd ~/
+#      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Uploading ccache...."
+#      - rclone copy ccache.tar.gz venyx:crdroid -P
+#      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Ccache Uploaded Successfully!"
 
