@@ -3,7 +3,7 @@ env:
     rcloneconfig: "ENCRYPTED[!a12d83a216a5d5a554e64f3b93a22c440193d8d127185bdef677424471d9c969f2ab5a2c0b3025b14c5a4b844cce6ee7!]"
     tokentl: "ENCRYPTED[!6a183e43e28acc82ad4c79f5c7d333bf539c71534a61e230cd58ec57e5a1f88243de7e0b72243087f2e3f8749554bfc0!]"
     idtl: "ENCRYPTED[!c0d3387a2a7bc56c9214bcf68aeb415780ccc7dd4e426aad728d89d4918c09d715a707afa2d84f14a0ce2d799c81965b!]"
-    lunch: lunch xdroid_juice-userdebug
+    lunch: lunch xdroid_juice-user
     make: make xd
 
 task:
