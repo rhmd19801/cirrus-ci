@@ -4,7 +4,7 @@ env:
     tokentl: "ENCRYPTED[!6a183e43e28acc82ad4c79f5c7d333bf539c71534a61e230cd58ec57e5a1f88243de7e0b72243087f2e3f8749554bfc0!]"
     idtl: "ENCRYPTED[!c0d3387a2a7bc56c9214bcf68aeb415780ccc7dd4e426aad728d89d4918c09d715a707afa2d84f14a0ce2d799c81965b!]"
     lunch: lunch xdroid_juice-userdebug
-    make: make sepolicy
+    make: make xd
 
 task:
   name: "Setting Up, Syncing, Building and Uploading..."
@@ -43,15 +43,15 @@ task:
       - repoo init -q --no-repo-verify --depth=1 -u https://github.com/IDN-Labs/xd_manifest.git -b eleven -g default,-mips,-darwin,-notdefault
       - git clone --depth 1 https://github.com/IDN-Labs/local_manifest.git -b xdcaf-juice .repo/local_manifests
       - rm -rf .repo/repo && git clone https://gerrit.googlesource.com/git-repo .repo/repo
-      - repoo sync -c -j8 --force-sync --no-clone-bundle --no-tags
+      - repoo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j8
       - sed -i 's| -u||g' vendor/xdroid/config/xd_version.mk
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Sync Completed!"
 
   Build_script:
       - sudo ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build Started!"
-#      - ./collect.sh
-      - ./final.sh
+      - ./collect.sh
+#      - ./final.sh
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build $(cd ~/rom/out/target/product/juice/ && ls xdCAF*.zip) Completed!"
 
   Upload_script:
