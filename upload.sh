@@ -5,10 +5,7 @@ if [ -f ~/rom/out/target/product/juice/xdCAF*.zip ]; then
 fi
 
 if [ -f ~/rom/out/target/product/juice/error.log ]; then
-    sudo apt update && sudo apt install curl -y
-    curl -F document=@~/rom/out/target/product/juice/error.log https://api.telegram.org/bot$tokentl/sendDocument \
-        -F chat_id=$idtl \
-        -F "disable_web_page_preview=true" \
-        -F "parse_mode=html" \
-        -F caption="Check these logs"
+      LOG=~/rom/out/target/product/juice/error.log
+      curl -F document=@$LOG https://api.telegram.org/$tokentl/sendDocument?chat_id=$idtl \
+      -F caption="Check these error logs"
 fi
