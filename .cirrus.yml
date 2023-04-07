@@ -48,6 +48,7 @@ task:
       - sed -i 's| -u||g' vendor/qassa/config/branding.mk
       - git clone https://github.com/lynnnnzx/android_device_xiaomi_juice-q -b qassa device/xiaomi/juice
       - git clone https://github.com/lynnnnzx/android_vendor_xiaomi_juice-q -b 10.staging vendor/xiaomi/juice
+      - git clone --depth 1 https://github.com/lynnnnzx/platform_packages_inputmethods_Gboard packages/inputmethods/Gboard
       - git clone --depth 1 https://github.com/frostg-012/android_kernel_xiaomi_juice kernel/xiaomi/juice
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Sync Completed!"
 
