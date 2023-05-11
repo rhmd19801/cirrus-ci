@@ -54,10 +54,11 @@ task:
       - export BUILD_HOSTNAME="IDN-Labs"
       - export KBUILD_BUILD_USER="OhMyVenyx"
       - export KBUILD_BUILD_HOST="IDN-Labs"
+      - export WITH_GAPPS=true
       - sudo ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build Started!"
-      - ./collect.sh
-#      - ./final.sh
+#      - ./collect.sh
+      - ./final.sh
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build $(cd ~/rom/out/target/product/ysl/ && ls qassa-*.zip) Completed!"
 
   Upload_script:
