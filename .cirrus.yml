@@ -50,12 +50,17 @@ task:
   Build_script:
       - sudo ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build Started!"
-      - ./collect.sh
-#      - ./final.sh
+#      - ./collect.sh
+      - ./final.sh NavigationBarModeGesturalOverlay
+      - ./final.sh NavigationBarModeGesturalOverlayExtraWideBack
+      - ./final.sh NavigationBarModeGesturalOverlayNarrowBack
+      - ./final.sh NavigationBarModeGesturalOverlayWideBack
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build $(cd ~/rom/out/target/product/juice/ && ls xdCAF*.zip) Completed!"
 
   Upload_script:
       - ./upload.sh
+      - zip -r9 NavigationOverlay.zip ~/rom/out/target/product/whyred/system
+      - rclone copy NavigationOverlay.zip venyx:whyred -P
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Compres ccache"
       - ./ziping.sh
       - cd ~/
