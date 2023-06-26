@@ -2,7 +2,7 @@
 
 sleep 1m
 
-cd /home/cirrus
+cd ~/
 
 com ()
 {
