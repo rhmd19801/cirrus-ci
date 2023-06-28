@@ -13,5 +13,6 @@ ccache -o compression=true
 ccache -z
 
 $lunch
+export CONFIG_LOCALVERSION_AUTO=y
 $make -j8
 

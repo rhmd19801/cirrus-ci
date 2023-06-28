@@ -4,7 +4,7 @@ env:
     tokentl: "ENCRYPTED[!6a183e43e28acc82ad4c79f5c7d333bf539c71534a61e230cd58ec57e5a1f88243de7e0b72243087f2e3f8749554bfc0!]"
     idtl: "ENCRYPTED[!c0d3387a2a7bc56c9214bcf68aeb415780ccc7dd4e426aad728d89d4918c09d715a707afa2d84f14a0ce2d799c81965b!]"
     lunch: lunch xdroid_whyred-userdebug
-    make: make xd
+    make: make kernel
 
 task:
   name: "Setting Up, Syncing, Building and Uploading..."
@@ -44,16 +44,19 @@ task:
       - git clone --depth 1 https://github.com/IDN-Labs/local_manifest.git -b xdclo-whyred .repo/local_manifests
       - rm -rf .repo/repo && git clone https://gerrit.googlesource.com/git-repo .repo/repo
       - repoo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j8
+      - rm -rf system/extras/su
       - sed -i 's| -u||g' vendor/xdroid/config/xd_version.mk
-      - cd ~/rom/kernel/sdm660
+      - cd ~/rom/kernel/xiaomi/sdm660
       - git submodule update --recursive --init
+      - sed -i 's|-g $head|/g $head|g' scripts/setlocalversion
+      - sed -i 's|-dirty||g' scripts/setlocalversion
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Sync Completed!"
 
   Build_script:
       - sudo ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build Started!"
-      - ./collect.sh
-#      - ./final.sh
+#      - ./collect.sh
+      - ./final.sh
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build $(cd ~/rom/out/target/product/whyred/ && ls xdCLO*.zip) Completed!"
 
   Upload_script:
