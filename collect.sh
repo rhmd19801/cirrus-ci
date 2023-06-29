@@ -12,7 +12,6 @@ ccache -M 100G -F 0
 ccache -o compression=true
 ccache -z
 $lunch
-export CONFIG_LOCALVERSION_AUTO=y
 $make -j8 &
 sleep 100m
 kill %1
