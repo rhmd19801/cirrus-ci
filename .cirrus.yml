@@ -10,7 +10,7 @@ task:
   name: "Setting Up, Syncing, Building and Uploading..."
   timeout_in: 480m
   container:
-      image: inok2341/anu:latest
+      image: ohmyvenyx/rahmed:latest
       cpu: 8
       memory: 32G
 
@@ -38,14 +38,10 @@ task:
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Start sync Source"
       - mkdir -p ~/rom
       - cd ~/rom
-      - sudo curl --create-dirs -L -o /usr/local/bin/repoo -O -L https://storage.googleapis.com/git-repo-downloads/repo
-      - sudo chmod a+rx /usr/local/bin/repoo
       - rm -rf .repo
-      - repoo init --depth=1 -u https://github.com/Evolution-X/manifest.git -b tiramisu -g default,-mips,-darwin,-notdefault
+      - repo init -q --no-repo-verify --depth=1 -u https://github.com/Evolution-X/manifest.git -b tiramisu -g default,-mips,-darwin,-notdefault
       - git clone --depth=1 https://github.com/IDN-Labs/local_manifest.git -b evox-13.0 .repo/local_manifests
-      - find .repo -name '*.lock' -delete
-#      - repoo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j8 --fail-fast
-      - repoo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
+      - repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
       - sed -i 's| -u||g' vendor/evolution/config/version.mk
       - cd ~/rom/kernel/xiaomi/msm8953
       - git submodule update --recursive --init
