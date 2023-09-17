@@ -47,6 +47,8 @@ task:
 #      - repoo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j8 --fail-fast
       - repoo sync -c -j8 --force-sync --no-clone-bundle --no-tags
       - sed -i 's| -u||g' vendor/qassa/config/branding.mk
+#      - sed -i 's|v2.2-0|v2.2|g' vendor/qassa/config/branding.mk
+      - sed -i 's|Sisu-WIP|Sisu|g' vendor/qassa/config/branding.mk
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Sync Completed!"
 
   Build_script:
@@ -54,7 +56,7 @@ task:
       - export BUILD_HOSTNAME="IDN-Labs"
       - export KBUILD_BUILD_USER="OhMyVenyx"
       - export KBUILD_BUILD_HOST="IDN-Labs"
-      - export WITH_GAPPS=true
+#      - export WITH_GAPPS=true
       - sudo ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build Started!"
 #      - ./collect.sh
