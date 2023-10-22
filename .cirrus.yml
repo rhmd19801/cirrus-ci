@@ -49,11 +49,13 @@ task:
       - source build/envsetup.sh
       - reposync auto
       - sed -i 's| -u||g' vendor/kasumi/config/common.mk
+      - sed -i 's|$(GCGOP_VENDOR_DIR)|vendor/gcgop|g' vendor/kasumi/config/common.mk
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Sync Completed!"
 
   Build_script:
       - sudo ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build Started!"
+      - sh ~/rom/vendor/gcgop/vendorsetup.sh
       - ./collect.sh
 #      - ./final.sh
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build $(cd ~/rom/out/target/product/ysl/ && ls kasumi*.zip) Completed!"
