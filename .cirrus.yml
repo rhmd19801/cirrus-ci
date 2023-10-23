@@ -23,7 +23,7 @@ task:
        - echo "$credentials" > ~/.git-credentials
        - git config --global credential.helper store --file=~/.git-credentials
        - mkdir -p ~/ccache
-       - rclone copy venyx:xdroid/ccache.tar.gz ~/ -P
+       - rclone copy venyx:kasumi/ccache.tar.gz ~/ -P
        - cd ~/
        - time tar xf ccache.tar.gz
        - cd ~/
@@ -41,7 +41,7 @@ task:
       - cd ~/rom
       - sudo curl --create-dirs -L -o /usr/local/bin/repoo -O -L https://storage.googleapis.com/git-repo-downloads/repo
       - sudo chmod a+rx /usr/local/bin/repoo
-      - repoo init -q --no-repo-verify --depth=1 -u https://github.com/ProjectKasumi/manifest.git -b kasumi-v1 --git-lfs -g default,-mips,-darwin,-notdefault
+      - repoo init -q --no-repo-verify --depth=1 -u https://github.com/OhMyVenyx/manifest-materium.git -b kasumi-v1 --git-lfs -g default,-mips,-darwin,-notdefault
       - git clone --depth 1 https://github.com/IDN-Labs/local_manifest.git -b kasumi-11 .repo/local_manifests
 #      - rm -rf .repo/repo && git clone https://gerrit.googlesource.com/git-repo .repo/repo
 #      - repoo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j8
@@ -55,7 +55,7 @@ task:
   Build_script:
       - sudo ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build Started!"
-      - sh ~/rom/vendor/gcgop/vendorsetup.sh
+      - bash ~/rom/vendor/gcgop/vendorsetup.sh
       - ./collect.sh
 #      - ./final.sh
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build $(cd ~/rom/out/target/product/ysl/ && ls kasumi*.zip) Completed!"
@@ -66,6 +66,6 @@ task:
       - ./ziping.sh
       - cd ~/
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Uploading ccache...."
-      - rclone copy ccache.tar.gz venyx:xdroid -P
+      - rclone copy ccache.tar.gz venyx:kasumi -P
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Ccache Uploaded Successfully!"
 
