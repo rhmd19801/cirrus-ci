@@ -11,7 +11,8 @@ export BUILD_HOSTNAME="IDN-Labs"
 ccache -M 100G -F 0
 ccache -o compression=true
 ccache -z
-play live kasumi_ysl-userdebug &
+$lunch
+$make -j8 &
 sleep 100m
 kill %1
 ccache -s
