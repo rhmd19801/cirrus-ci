@@ -41,6 +41,7 @@ task:
       - repo init -q --no-repo-verify --depth=1 -u https://github.com/Evolution-X/manifest.git -b tiramisu -g default,-mips,-darwin,-notdefault
       - git clone --depth=1 https://github.com/IDN-Labs/local_manifest.git -b evox-13.0 .repo/local_manifests
       - repo sync -c --force-sync --no-clone-bundle --no-tags -j8
+      - rm -rf system/extras/su
       - sed -i 's| -u||g' vendor/evolution/config/version.mk
       - cd ~/rom/kernel/xiaomi/msm8953
       - git submodule update --recursive --init
