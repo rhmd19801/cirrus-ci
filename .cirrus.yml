@@ -4,7 +4,7 @@ env:
     tokentl: "ENCRYPTED[!6a183e43e28acc82ad4c79f5c7d333bf539c71534a61e230cd58ec57e5a1f88243de7e0b72243087f2e3f8749554bfc0!]"
     idtl: "ENCRYPTED[!c0d3387a2a7bc56c9214bcf68aeb415780ccc7dd4e426aad728d89d4918c09d715a707afa2d84f14a0ce2d799c81965b!]"
     lunch: lunch evolution_ysl-userdebug
-    make: make evolution
+    make: make kernel
 
 task:
   name: "Setting Up, Syncing, Building and Uploading..."
@@ -41,10 +41,7 @@ task:
       - repo init -q --no-repo-verify --depth=1 -u https://github.com/Evolution-X/manifest.git -b tiramisu -g default,-mips,-darwin,-notdefault
       - git clone --depth=1 https://github.com/IDN-Labs/local_manifest.git -b evox-13.0 .repo/local_manifests
       - repo sync -c --force-sync --no-clone-bundle --no-tags -j8
-      - rm -rf system/extras/su
       - sed -i 's| -u||g' vendor/evolution/config/version.mk
-      - cd ~/rom/kernel/xiaomi/msm8953
-      - git submodule update --recursive --init
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Sync Completed!"
 
   Build_script:
