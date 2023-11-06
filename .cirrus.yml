@@ -40,6 +40,7 @@ task:
       - cd ~/rom
       - repo init -q --no-repo-verify --depth=1 -u https://github.com/Evolution-X/manifest.git -b tiramisu -g default,-mips,-darwin,-notdefault
       - git clone --depth=1 https://github.com/IDN-Labs/local_manifest.git -b evox-13.0 .repo/local_manifests
+      - git lfs install
       - repo sync -c --force-sync --no-clone-bundle --no-tags -j8
       - sed -i 's| -u||g' vendor/evolution/config/version.mk
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Sync Completed!"
