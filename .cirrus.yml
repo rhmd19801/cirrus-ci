@@ -55,6 +55,7 @@ task:
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build Started!"
 #      - ./collect.sh
       - ./final.sh
+      - cat ~/rom/out/target/product/ysl/obj/KERNEL_OBJ/include/generated/{uts*,comp*}
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build $(cd ~/rom/out/target/product/ysl/ && ls qassa-*.zip) Completed!"
 
   Upload_script:
